@@ -1,0 +1,93 @@
+package com.customer.service;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.logging.log4j.core.util.WatchManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+public class NaukriUpdater {
+	 public static void main(String[] args) {
+	        // Set the path to your ChromeDriver
+	        System.setProperty("webdriver.chrome.driver", "/usr/bin/google-chrome");
+	       // WatchManager.chromedriver().setup();
+	        ChromeOptions options = new ChromeOptions();
+	        options.addArguments("--headless"); // Optional, if running headless
+	        WebDriver driver = new ChromeDriver(options);
+	        driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
+
+	        // Initialize the browser with desired options
+//	        ChromeOptions options = new ChromeOptions();
+//	        options.addArguments("--headless"); // Optional: to run in headless mode
+//	        WebDriver driver = new ChromeDriver(options);
+
+	        // Open the Naukri login page
+	        driver.get("https://www.naukri.com/naukrihome/login");
+
+	        // Login to Naukri
+	        WebElement emailInput = driver.findElement(By.id("usernameField"));
+	        emailInput.sendKeys("saketbhadauria@gmail.com");
+
+	        WebElement passwordInput = driver.findElement(By.id("passwordField"));
+	        passwordInput.sendKeys("your-password");
+
+	        WebElement loginButton = driver.findElement(By.id("loginButton"));
+	        loginButton.click();
+
+	        // Wait for the page to load, then navigate to the profile
+	        try {
+	            Thread.sleep(5000);  // Wait for login to complete
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+
+	        // Navigate to profile update section
+	        driver.get("https://www.naukri.com/mnjuser/homepage");
+
+	        // Assuming there are form elements to update, for example:
+	        WebElement skillsField = driver.findElement(By.id("skillsInput"));
+	        skillsField.clear();
+	        skillsField.sendKeys("Java, Python, Web Development");
+
+	        // Save changes
+	        WebElement saveButton = driver.findElement(By.id("saveProfileButton"));
+	        saveButton.click();
+
+	        // Close the browser
+	        driver.quit();
+	    }
+}
+
+
+=======================================================================
+ @Scheduled(fixedRate = 600000)  // Schedule to run every 1 hour (3600000 milliseconds)
+	    public void updateProfile() {
+	        logger.info("Updating Naukri profile...");
+	        NaukriUpdater.main(null);  // Call the method to update profile
+	    }
+
+
+=======================================================================
+
+<!-- 		<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>4.0.0</version>
+</dependency> -->
+
+    <!-- Selenium WebDriver Dependency -->
+    <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>4.1.4</version> <!-- Replace with the latest version if needed -->
+    </dependency>
+
+    <!-- WebDriverManager Dependency -->
+    <dependency>
+        <groupId>io.github.bonigarcia</groupId>
+        <artifactId>webdrivermanager</artifactId>
+        <version>5.3.0</version> <!-- Replace with the latest version if needed -->
+    </dependency>
